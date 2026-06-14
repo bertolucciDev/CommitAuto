@@ -2,14 +2,12 @@
 ================
 
 ## Description
-AI Commit CLI is an open-source command-line interface (CLI) tool that utilizes artificial intelligence to generate conventional commit messages. It aims to simplify the commit process and promote a standardized commit message format.
+AI Commit CLI is a command-line interface (CLI) tool that utilizes artificial intelligence (AI) to generate conventional commit messages for Git repositories. This tool aims to simplify the commit process by providing a standardized and consistent way of writing commit messages.
 
 ## Features
-- AI-powered commit message generation
-- Supports conventional commit message format
-- Easy to use and integrate into existing workflows
-- Customizable commit message templates
+------------
 
-## Technologies
-- Node.js
-- @inquirer/prompts for interactive prompts
+*   Generate conventional commit messages using AI
+*   Support for multiple commit types (e.g., feat, fix, docs)
+*   Ability to specify custom commit scopes
+*
