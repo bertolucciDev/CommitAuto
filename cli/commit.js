@@ -6,6 +6,7 @@ const {
     confirmCommit,
     confirmStageAll,
     confirmPublish,
+    askRepositoryUrl,
     askBranchName
 } = require("./prompts");
 
@@ -16,6 +17,10 @@ const {
 const {
     stageAll
 } = require("../git/add");
+
+const {
+    addOrigin
+} = require("../git/origin");
 
 const {
     getGitDiff
@@ -169,15 +174,23 @@ async function commitCommand() {
             await hasOrigin();
 
         if (!originExists) {
-            console.log(`
-No remote origin found.
+            const repositoryUrl =
+                await askRepositoryUrl();
 
-Add one using:
+            const originSpinner =
+                createSpinner(
+                    "Adding remote origin..."
+                );
 
-git remote add origin <repository-url>
-`);
+            originSpinner.start();
 
-            return;
+            await addOrigin(
+                repositoryUrl
+            );
+
+            originSpinner.succeed(
+                "Remote origin added successfully."
+            );
         }
 
         const pushSpinner =

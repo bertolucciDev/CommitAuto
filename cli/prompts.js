@@ -25,6 +25,21 @@ async function confirmPublish() {
   });
 }
 
+async function askRepositoryUrl() {
+  return input({
+    message:
+      "Repository URL:",
+
+    validate(value) {
+      if (!value.trim()) {
+        return "Repository URL is required.";
+      }
+
+      return true;
+    }
+  });
+}
+
 async function askBranchName(
   currentBranch
 ) {
@@ -47,5 +62,6 @@ module.exports = {
   confirmCommit,
   confirmStageAll,
   confirmPublish,
+  askRepositoryUrl,
   askBranchName
 };
