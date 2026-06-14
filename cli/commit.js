@@ -10,6 +10,10 @@ const {
 } = require("./prompts");
 
 const {
+    hasOrigin
+} = require("../git/remote");
+
+const {
     stageAll
 } = require("../git/add");
 
@@ -160,6 +164,21 @@ async function commitCommand() {
             await askBranchName(
                 currentBranch
             );
+
+        const originExists =
+            await hasOrigin();
+
+        if (!originExists) {
+            console.log(`
+No remote origin found.
+
+Add one using:
+
+git remote add origin <repository-url>
+`);
+
+            return;
+        }
 
         const pushSpinner =
             createSpinner(
