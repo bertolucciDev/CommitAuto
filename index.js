@@ -8,6 +8,10 @@ const {
   commitCommand
 } = require("./cli/commit");
 
+const {
+  readmeCommand
+} = require("./commands/readme");
+
 async function bootstrap() {
   await loadEnv();
 
@@ -19,11 +23,16 @@ async function bootstrap() {
       await commitCommand();
       break;
 
+    case "readme":
+      await readmeCommand();
+      break;
+
     default:
       console.log(`
 Usage:
 
 aic commit
+aic readme
 `);
   }
 }
