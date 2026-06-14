@@ -6,9 +6,15 @@ const {
     confirmCommit,
     confirmStageAll,
     confirmPublish,
+    askProjectName,
     askRepositoryUrl,
     askBranchName
 } = require("./prompts");
+
+const {
+    initializeRepository
+} = require("../git/bootstrap");
+
 
 const {
     hasOrigin
@@ -174,23 +180,29 @@ async function commitCommand() {
             await hasOrigin();
 
         if (!originExists) {
+            const projectName =
+                await askProjectName();
+
             const repositoryUrl =
                 await askRepositoryUrl();
 
-            const originSpinner =
+            const bootstrapSpinner =
                 createSpinner(
-                    "Adding remote origin..."
+                    "Initializing repository..."
                 );
 
-            originSpinner.start();
+            bootstrapSpinner.start();
 
-            await addOrigin(
+            await initializeRepository(
+                projectName,
                 repositoryUrl
             );
 
-            originSpinner.succeed(
-                "Remote origin added successfully."
+            bootstrapSpinner.succeed(
+                "Repository initialized successfully."
             );
+
+            return;
         }
 
         const pushSpinner =

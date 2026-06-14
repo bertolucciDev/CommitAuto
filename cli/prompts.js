@@ -25,14 +25,40 @@ async function confirmPublish() {
   });
 }
 
+async function askProjectName() {
+  return input({
+    message: "Project name:",
+
+    validate(value) {
+      if (!value.trim()) {
+        return "Project name is required.";
+      }
+
+      return true;
+    }
+  });
+}
+
 async function askRepositoryUrl() {
   return input({
     message:
-      "Repository URL:",
+      "GitHub repository URL:",
 
     validate(value) {
       if (!value.trim()) {
         return "Repository URL is required.";
+      }
+
+      const isGitHubUrl =
+        value.startsWith(
+          "https://github.com/"
+        ) ||
+        value.startsWith(
+          "git@github.com:"
+        );
+
+      if (!isGitHubUrl) {
+        return "Invalid GitHub repository URL.";
       }
 
       return true;
@@ -41,7 +67,7 @@ async function askRepositoryUrl() {
 }
 
 async function askBranchName(
-  currentBranch
+  currentBranch = "main"
 ) {
   return input({
     message: "Branch name:",
@@ -62,6 +88,7 @@ module.exports = {
   confirmCommit,
   confirmStageAll,
   confirmPublish,
+  askProjectName,
   askRepositoryUrl,
   askBranchName
 };
