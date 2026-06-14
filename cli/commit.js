@@ -52,6 +52,11 @@ const {
   generateAICommit
 } = require("../ai/generateCommit");
 
+const isAutoMode =
+  process.argv.includes(
+    "--auto"
+  );
+
 async function commitCommand() {
   const spinner =
     createSpinner(
@@ -82,7 +87,9 @@ async function commitCommand() {
       spinner.stop();
 
       const shouldStage =
-        await confirmStageAll();
+        isAutoMode
+          ? true
+          : await confirmStageAll();
 
       if (!shouldStage) {
         console.log(
@@ -137,9 +144,11 @@ async function commitCommand() {
     console.log("\n");
 
     const accepted =
-      await confirmCommit(
-        message
-      );
+      isAutoMode
+        ? true
+        : await confirmCommit(
+            message
+          );
 
     if (!accepted) {
       console.log(
@@ -165,7 +174,9 @@ async function commitCommand() {
     );
 
     const shouldPublish =
-      await confirmPublish();
+      isAutoMode
+        ? true
+        : await confirmPublish();
 
     if (!shouldPublish) {
       return;
@@ -175,16 +186,22 @@ async function commitCommand() {
       await getCurrentBranch();
 
     const branchName =
-      await askBranchName(
-        currentBranch
-      );
+      isAutoMode
+        ? currentBranch
+        : await askBranchName(
+            currentBranch
+          );
 
     const originExists =
       await hasOrigin();
 
     if (!originExists) {
       const projectName =
-        await askProjectName();
+        isAutoMode
+          ? process.cwd()
+              .split("\\")
+              .pop()
+          : await askProjectName();
 
       const repositoryUrl =
         await askRepositoryUrl();
