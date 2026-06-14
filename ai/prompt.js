@@ -25,7 +25,7 @@ Allowed types:
 - perf
 - test
 - ui
--style
+- style
 
 Changed files:
 ${limitedFiles.join("\n")}
