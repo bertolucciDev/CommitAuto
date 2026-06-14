@@ -44,7 +44,6 @@ const {
 } = require("../git/check");
 
 const {
-  publishBranch,
   getCurrentBranch,
   checkoutBranch
 } = require("../git/push");
@@ -209,31 +208,16 @@ async function commitCommand() {
       return;
     }
 
-    const publishSpinner =
-      createSpinner(
-        "Publishing branch..."
-      );
-
-    publishSpinner.start();
-
-    await checkoutBranch(
-      branchName
-    );
-
-    await publishBranch(
-      branchName
-    );
-
-    publishSpinner.succeed(
-      `Branch "${branchName}" published successfully.`
-    );
-
     const syncSpinner =
       createSpinner(
         "Syncing branch..."
       );
 
     syncSpinner.start();
+
+    await checkoutBranch(
+      branchName
+    );
 
     await syncBranch(
       branchName
@@ -244,9 +228,7 @@ async function commitCommand() {
     );
 
   } catch (error) {
-    spinner.fail(
-      "Error generating commit."
-    );
+    console.log("\n");
 
     console.error(
       error.message
