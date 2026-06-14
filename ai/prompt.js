@@ -19,13 +19,24 @@ Rules:
 Allowed types:
 - feat
 - fix
-- refactor
 - docs
-- chore
+- style
+- refactor
 - perf
 - test
+- build
+- ci
+- chore
+- revert
 - ui
-- style
+- deps
+- security
+- config
+- release
+- hotfix
+- types
+- wip
+- merge
 
 Changed files:
 ${limitedFiles.join("\n")}
