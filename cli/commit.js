@@ -11,6 +11,9 @@ const {
   askBranchName
 } = require("./prompts");
 
+const flags =
+  require("../config/flags");
+
 const {
   initializeRepository
 } = require("../git/bootstrap");
@@ -40,6 +43,10 @@ const {
 } = require("../git/commit");
 
 const {
+  amendCommit
+} = require("../git/amend");
+
+const {
   isGitRepo
 } = require("../git/check");
 
@@ -51,11 +58,6 @@ const {
 const {
   generateAICommit
 } = require("../ai/generateCommit");
-
-const isAutoMode =
-  process.argv.includes(
-    "--auto"
-  );
 
 async function commitCommand() {
   const spinner =
@@ -87,7 +89,7 @@ async function commitCommand() {
       spinner.stop();
 
       const shouldStage =
-        isAutoMode
+        flags.auto
           ? true
           : await confirmStageAll();
 
@@ -144,7 +146,7 @@ async function commitCommand() {
     console.log("\n");
 
     const accepted =
-      isAutoMode
+      flags.auto
         ? true
         : await confirmCommit(
             message
@@ -160,21 +162,35 @@ async function commitCommand() {
 
     const commitSpinner =
       createSpinner(
-        "Creating commit..."
+        flags.amend
+          ? "Amending commit..."
+          : "Creating commit..."
       );
 
     commitSpinner.start();
 
-    await createCommit(
-      message
-    );
+    if (flags.amend) {
+      await amendCommit(
+        message
+      );
+    } else {
+      await createCommit(
+        message
+      );
+    }
 
     commitSpinner.succeed(
-      "Commit created successfully."
+      flags.amend
+        ? "Commit amended successfully."
+        : "Commit created successfully."
     );
 
+    if (flags.noPush) {
+      return;
+    }
+
     const shouldPublish =
-      isAutoMode
+      flags.auto
         ? true
         : await confirmPublish();
 
@@ -186,7 +202,7 @@ async function commitCommand() {
       await getCurrentBranch();
 
     const branchName =
-      isAutoMode
+      flags.auto
         ? currentBranch
         : await askBranchName(
             currentBranch
@@ -197,7 +213,7 @@ async function commitCommand() {
 
     if (!originExists) {
       const projectName =
-        isAutoMode
+        flags.auto
           ? process.cwd()
               .split("\\")
               .pop()

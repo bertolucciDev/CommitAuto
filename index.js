@@ -12,6 +12,10 @@ const {
   readmeCommand
 } = require("./commands/readme");
 
+const {
+  releaseCommand
+} = require("./commands/release");
+
 async function bootstrap() {
   await loadEnv();
 
@@ -27,8 +31,10 @@ async function bootstrap() {
       await readmeCommand();
       break;
 
-    case "--help":
-    case "-h":
+    case "release":
+      await releaseCommand();
+      break;
+
     default:
       console.log(`
 AI Commit CLI
@@ -36,16 +42,14 @@ AI Commit CLI
 Usage:
 
 aic commit
+aic commit --auto
+aic commit --auto --no-push
+aic commit --amend
 
 aic readme
-
 aic readme --template modern
 
-aic readme --template minimal
-
-aic readme --template enterprise
-
-aic readme --template open-source
+aic release
 `);
   }
 }
