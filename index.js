@@ -27,12 +27,25 @@ async function bootstrap() {
       await readmeCommand();
       break;
 
+    case "--help":
+    case "-h":
     default:
       console.log(`
+AI Commit CLI
+
 Usage:
 
 aic commit
+
 aic readme
+
+aic readme --template modern
+
+aic readme --template minimal
+
+aic readme --template enterprise
+
+aic readme --template open-source
 `);
   }
 }
