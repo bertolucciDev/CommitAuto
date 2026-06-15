@@ -41,13 +41,23 @@ AI Commit CLI
 
 Usage:
 
+aic sentinel on
+
 aic commit
 aic commit --auto
 aic commit --auto --no-push
 aic commit --amend
 
 aic readme
+
+===Templates===
+
 aic readme --template modern
+aic readme --template enterprise
+aic readme --template open-source
+aic readme --template minimal
+
+===============
 
 aic release
 `);
